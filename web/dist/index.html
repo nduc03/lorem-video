@@ -117,7 +117,7 @@
         
         <div class="demo">
             <p>Try it now:</p>
-            <a href="/720p" target="_blank">{{.BaseURL}}/720p</a>
+            <a href="/720p" target="_blank"><span class="base-url">{{.BaseURL}}</span>/720p</a>
         </div>
     </div>
 
@@ -125,23 +125,23 @@
         <h2>🚀 Quick Start Examples</h2>
         <div class="example">
             <strong>Basic placeholder:</strong><br>
-            <code>{{.BaseURL}}/720p</code> - Standard 720p test video
+            <code><span class="base-url">{{.BaseURL}}</span>/720p</code> - Standard 720p test video
         </div>
         <div class="example">
             <strong>Custom resolution:</strong><br>
-            <code>{{.BaseURL}}/1280x720</code> - Custom 1280x720 test video
+            <code><span class="base-url">{{.BaseURL}}</span>/1280x720</code> - Custom 1280x720 test video
         </div>
         <div class="example">
             <strong>Modern codec testing:</strong><br>
-            <code>{{.BaseURL}}/720p_av1</code> - Test AV1 codec support
+            <code><span class="base-url">{{.BaseURL}}</span>/720p_av1</code> - Test AV1 codec support
         </div>
         <div class="example">
             <strong>Short clips for prototyping:</strong><br>
-            <code>{{.BaseURL}}/720p_h264_10s</code> - Quick 10-second sample
+            <code><span class="base-url">{{.BaseURL}}</span>/720p_h264_10s</code> - Quick 10-second sample
         </div>
         <div class="example">
             <strong>Change video source:</strong><br>
-            <code>{{.BaseURL}}/cat_128kbps</code> - Cat video instead of default bunny
+            <code><span class="base-url">{{.BaseURL}}</span>/cat_128kbps</code> - Cat video instead of default bunny
         </div>
     </div>
 
@@ -317,7 +317,10 @@
                 
                 
                 const linkEl = document.getElementById("pb-link");
-                const baseUrl = "{{.BaseURL}}";
+                const baseUrl = window.location.origin || "{{.BaseURL}}";
+                document.querySelectorAll('.base-url').forEach(function(el) {
+                    el.textContent = baseUrl;
+                });
 
                 function updateLink() {
                     const source = document.getElementById("pb-source").value;
@@ -459,22 +462,22 @@
         
         <div class="example">
             <strong>High-res performance testing:</strong><br>
-            <code>{{.BaseURL}}/bunny_4k_h265_30fps_60s_aac_192kbps.mp4</code>
+            <code><span class="base-url">{{.BaseURL}}</span>/bunny_4k_h265_30fps_60s_aac_192kbps.mp4</code>
         </div>
         
         <div class="example">
             <strong>Mobile app development:</strong><br>
-            <code>{{.BaseURL}}/cat_480p_h264_30fps_15s_aac_96kbps.mp4</code>
+            <code><span class="base-url">{{.BaseURL}}</span>/cat_480p_h264_30fps_15s_aac_96kbps.mp4</code>
         </div>
         
         <div class="example">
             <strong>Web player compatibility:</strong><br>
-            <code>{{.BaseURL}}/test_1080p_vp9_30fps_30s_25crf_opus_128kbps.webm</code>
+            <code><span class="base-url">{{.BaseURL}}</span>/test_1080p_vp9_30fps_30s_25crf_opus_128kbps.webm</code>
         </div>
         
         <div class="example">
             <strong>Audio player testing:</strong><br>
-            <code>{{.BaseURL}}/bunny_novideo_30s_aac_128kbps.mp4</code>
+            <code><span class="base-url">{{.BaseURL}}</span>/bunny_novideo_30s_aac_128kbps.mp4</code>
         </div>
 
         <div class="warning">
