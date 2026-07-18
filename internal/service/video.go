@@ -10,7 +10,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"syscall"
 
 	"lorem.video/internal/config"
 	"lorem.video/internal/parser"
@@ -154,14 +153,7 @@ func (s *VideoService) Transcode(ctx context.Context, spec config.VideoSpec, inp
 
 		args = append(args, fullOutputPath)
 
-		// Use nice to lower process priority for background video generation
-		niceArgs := append([]string{"-n", "10", "ffmpeg"}, args...)
-		cmd := exec.CommandContext(ctx, "nice", niceArgs...)
-
-		// Add resource limits for VPS environments
-		cmd.SysProcAttr = &syscall.SysProcAttr{
-			Setpgid: true, // Create new process group for better cleanup
-		}
+		cmd := createFFmpegCmd(ctx, args)
 
 		var stderr bytes.Buffer
 		cmd.Stderr = &stderr
