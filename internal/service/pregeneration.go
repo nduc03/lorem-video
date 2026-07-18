@@ -4,11 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"math"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
@@ -92,43 +95,139 @@ func PregenerateVideos(ctx context.Context, inputPath string) ([]string, error) 
 	return generatedFiles, nil
 }
 
-// GenerateDefaultSourceVideo creates a default test video using FFmpeg generators
-func GenerateDefaultSourceVideo(outputPath string) error {
-	cmd := exec.Command("ffmpeg",
-		"-f", "lavfi",
-		"-i", "testsrc2=duration=60:size=1920x1080:rate=30", // Test pattern video
-		"-f", "lavfi",
-		"-i", "sine=frequency=440:duration=60", // 440Hz test tone
-		"-c:v", "libx264",
-		"-preset", "fast",
-		"-crf", "25",
-		"-c:a", "aac",
-		"-b:a", "128k",
-		"-y", // Overwrite if exists
-		outputPath,
-	)
+// GenerateDefaultSourceVideo downloads a default high-resolution video
 
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("ffmpeg failed to generate test video: %w", err)
-	}
-
-	log.Printf("Generated default source video: %s", outputPath)
-	return nil
-}
 
 // EnsureDefaultSourceVideo checks if default source video exists and generates it if not
 func EnsureDefaultSourceVideo() error {
 	defaultPath := config.AppPaths.DefaultSourceVideo
+	var finalErr error
 
-	if _, err := os.Stat(defaultPath); os.IsNotExist(err) {
-		log.Printf("Default source video not found, generating: %s", defaultPath)
-		return GenerateDefaultSourceVideo(defaultPath)
-	} else if err != nil {
-		return fmt.Errorf("failed to check default source video: %w", err)
+	if _, statErr := os.Stat(defaultPath); os.IsNotExist(statErr) {
+		log.Printf("Default source video not found, generating/downloading: %s", defaultPath)
+		finalErr = GenerateDefaultSourceVideo(defaultPath)
+	} else if statErr != nil {
+		return fmt.Errorf("failed to check default source video: %w", statErr)
+	}
+
+	// Always validate and extract duration
+	durationSeconds, validateErr := validateVideo(defaultPath)
+	if validateErr != nil {
+		log.Printf("Existing default video is invalid (%v). Regenerating fallback...", validateErr)
+		os.Remove(defaultPath)
+		if err := generateFallbackVideo(defaultPath); err != nil {
+			return fmt.Errorf("failed to generate fallback video: %w", err)
+		}
+		durationSeconds, _ = validateVideo(defaultPath)
+	}
+
+	// Update config.MaxDurationMinutes dynamically
+	videoMinutes := max(int(math.Floor(durationSeconds / 60)), 1)
+	if config.MaxDurationMinutes == 0 || config.MaxDurationMinutes > videoMinutes {
+		config.MaxDurationMinutes = videoMinutes
+	}
+
+	return finalErr
+}
+
+func GenerateDefaultSourceVideo(outputPath string) error {
+	url := os.Getenv("BUNNY_VIDEO_URL")
+	if url == "" {
+		log.Println("BUNNY_VIDEO_URL not set. Falling back to generated test video.")
+		return generateFallbackVideo(outputPath)
+	}
+
+	log.Printf("Downloading default video from %s to %s", url, outputPath)
+	if err := downloadLargeVideo(url, outputPath); err != nil {
+		log.Printf("Failed to download video (%v). Falling back to generated test video.", err)
+		os.Remove(outputPath) // clean up partial file
+		return generateFallbackVideo(outputPath)
 	}
 
 	return nil
 }
+
+func downloadLargeVideo(url, destPath string) error {
+	client := &http.Client{
+		Timeout: 30 * time.Minute, // ample time for large file
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("bad status: %s", resp.Status)
+	}
+
+	out, err := os.Create(destPath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, resp.Body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateVideo(path string) (float64, error) {
+	cmd := exec.Command(
+		"ffprobe",
+		"-v", "error",
+		"-show_entries", "format=duration",
+		"-of", "default=noprint_wrappers=1:nokey=1",
+		path,
+	)
+
+	output, err := cmd.Output()
+	if err != nil {
+		return 0, fmt.Errorf("ffprobe failed (is it a valid video?): %w", err)
+	}
+
+	durationStr := strings.TrimSpace(string(output))
+	duration, err := strconv.ParseFloat(durationStr, 64)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse duration '%s': %w", durationStr, err)
+	}
+
+	return duration, nil
+}
+
+func generateFallbackVideo(outputPath string) error {
+	fallbackMinutes := 10 // default
+	if valStr := os.Getenv("MAX_LOREM_VIDEO_MINUTE"); valStr != "" {
+		if v, err := strconv.Atoi(valStr); err == nil && v > 0 {
+			fallbackMinutes = v
+		}
+	}
+	durationSeconds := fallbackMinutes * 60
+
+	log.Printf("Generating fallback 'beep beep' test video to %s with duration %ds", outputPath, durationSeconds)
+	// Create a test video
+	cmd := exec.Command(
+		"ffmpeg", "-y",
+		"-f", "lavfi", "-i", fmt.Sprintf("testsrc=duration=%d:size=1280x720:rate=30", durationSeconds),
+		"-f", "lavfi", "-i", fmt.Sprintf("sine=frequency=1000:duration=%d", durationSeconds),
+		"-c:v", "libx264", "-c:a", "aac",
+		"-pix_fmt", "yuv420p",
+		outputPath,
+	)
+
+	if output, err := cmd.CombinedOutput(); err != nil {
+		return fmt.Errorf("ffmpeg failed: %w\n%s", err, string(output))
+	}
+	return nil
+}
+
 
 // PregenerateAllHLS generates HLS streams for all source video files
 func PregenerateAllHLS(ctx context.Context) (map[string][]string, error) {

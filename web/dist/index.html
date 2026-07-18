@@ -13,22 +13,22 @@
     <meta name="keywords" content="placeholder video, test video, sample video, dummy video, video testing, video API, H.264, AV1, VP9, WebM, MP4, developer tools, video development, streaming test">
     <meta name="author" content="Guntis Smaukstelis">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://{{.Domain}}/">
+    <link rel="canonical" href="{{.BaseURL}}/">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://{{.Domain}}/">
+    <meta property="og:url" content="{{.BaseURL}}/">
     <meta property="og:title" content="lorem.video - Free Placeholder Test Videos for Developers">
     <meta property="og:description" content="Free placeholder videos for testing and development. Generate sample videos with custom resolutions, codecs, and durations. Perfect for developers testing video players and streaming applications.">
-    <meta property="og:image" content="https://{{.Domain}}/web/og-image.png">
+    <meta property="og:image" content="{{.BaseURL}}/web/og-image.png">
     <meta property="og:site_name" content="lorem.video">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://{{.Domain}}/">
+    <meta name="twitter:url" content="{{.BaseURL}}/">
     <meta name="twitter:title" content="lorem.video - Free Placeholder Test Videos for Developers">
     <meta name="twitter:description" content="Free placeholder videos for testing and development. Generate sample videos with custom resolutions, codecs, and durations.">
-    <meta name="twitter:image" content="https://{{.Domain}}/web/og-image.png">
+    <meta name="twitter:image" content="{{.BaseURL}}/web/og-image.png">
     <meta name="twitter:creator" content="@guntis_dev">
     
     <!-- Structured Data / Schema.org -->
@@ -37,7 +37,7 @@
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "lorem.video",
-      "url": "https://{{.Domain}}/",
+      "url": "{{.BaseURL}}/",
       "description": "Free placeholder videos for testing and development. Generate sample videos with custom resolutions, codecs, and durations.",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Any",
@@ -55,45 +55,45 @@
           "@type": "VideoObject",
           "name": "720p - Free Placeholder Test Video",
           "description": "720p placeholder video for developers. Perfect for testing video players, streaming applications, and development environments.",
-          "thumbnailUrl": "https://{{.Domain}}/web/img/bunny-thumb.webp",
-          "contentUrl": "https://{{.Domain}}/720p.mp4",
-          "embedUrl": "https://{{.Domain}}/720p",
+          "thumbnailUrl": "{{.BaseURL}}/web/img/bunny-thumb.webp",
+          "contentUrl": "{{.BaseURL}}/720p.mp4",
+          "embedUrl": "{{.BaseURL}}/720p",
           "uploadDate": "2025-12-01"
         },
                 {
           "@type": "VideoObject",
           "name": "Big Buck Bunny - Free Placeholder Test Video",
           "description": "Big Buck Bunny placeholder video for developers. Perfect for testing video players, streaming applications, and development environments.",
-          "thumbnailUrl": "https://{{.Domain}}/web/img/bunny-thumb.webp",
-          "contentUrl": "https://{{.Domain}}/bunny.mp4",
-          "embedUrl": "https://{{.Domain}}/bunny",
+          "thumbnailUrl": "{{.BaseURL}}/web/img/bunny-thumb.webp",
+          "contentUrl": "{{.BaseURL}}/bunny.mp4",
+          "embedUrl": "{{.BaseURL}}/bunny",
           "uploadDate": "2025-12-01"
         },
         {
           "@type": "VideoObject",
           "name": "Cat Playing - Free Placeholder Test Video",
           "description": "Cat Pocco playing with his favorite toy. Sample video for testing and development purposes.",
-          "thumbnailUrl": "https://{{.Domain}}/web/img/cat-thumb.webp",
-          "contentUrl": "https://{{.Domain}}/cat.mp4",
-          "embedUrl": "https://{{.Domain}}/cat",
+          "thumbnailUrl": "{{.BaseURL}}/web/img/cat-thumb.webp",
+          "contentUrl": "{{.BaseURL}}/cat.mp4",
+          "embedUrl": "{{.BaseURL}}/cat",
           "uploadDate": "2025-12-01"
         },
         {
           "@type": "VideoObject",
           "name": "Corgi Dog Playing - Free Placeholder Test Video",
           "description": "Cute corgi dog Phoebe destroys mandarin box. Adorable sample video for testing and development purposes.",
-          "thumbnailUrl": "https://{{.Domain}}/web/img/corgi-thumb.webp",
-          "contentUrl": "https://{{.Domain}}/corgi.mp4",
-          "embedUrl": "https://{{.Domain}}/corgi",
+          "thumbnailUrl": "{{.BaseURL}}/web/img/corgi-thumb.webp",
+          "contentUrl": "{{.BaseURL}}/corgi.mp4",
+          "embedUrl": "{{.BaseURL}}/corgi",
           "uploadDate": "2025-12-01"
         },
         {
           "@type": "VideoObject",
           "name": "FFmpeg Test Video - Color Bars Placeholder",
           "description": "FFmpeg test pattern video with color bars. Ideal for testing video codecs, players, and streaming setups.",
-          "thumbnailUrl": "https://{{.Domain}}/web/img/test-thumb.webp",
-          "contentUrl": "https://{{.Domain}}/test.mp4",
-          "embedUrl": "https://{{.Domain}}/test",
+          "thumbnailUrl": "{{.BaseURL}}/web/img/test-thumb.webp",
+          "contentUrl": "{{.BaseURL}}/test.mp4",
+          "embedUrl": "{{.BaseURL}}/test",
           "uploadDate": "2025-12-01"
         }
       ]
@@ -117,7 +117,7 @@
         
         <div class="demo">
             <p>Try it now:</p>
-            <a href="/720p" target="_blank">https://{{.Domain}}/720p</a>
+            <a href="/720p" target="_blank">{{.BaseURL}}/720p</a>
         </div>
     </div>
 
@@ -125,23 +125,23 @@
         <h2>🚀 Quick Start Examples</h2>
         <div class="example">
             <strong>Basic placeholder:</strong><br>
-            <code>https://{{.Domain}}/720p</code> - Standard 720p test video
+            <code>{{.BaseURL}}/720p</code> - Standard 720p test video
         </div>
         <div class="example">
             <strong>Custom resolution:</strong><br>
-            <code>https://{{.Domain}}/1280x720</code> - Custom 1280x720 test video
+            <code>{{.BaseURL}}/1280x720</code> - Custom 1280x720 test video
         </div>
         <div class="example">
             <strong>Modern codec testing:</strong><br>
-            <code>https://{{.Domain}}/720p_av1</code> - Test AV1 codec support
+            <code>{{.BaseURL}}/720p_av1</code> - Test AV1 codec support
         </div>
         <div class="example">
             <strong>Short clips for prototyping:</strong><br>
-            <code>https://{{.Domain}}/720p_h264_10s</code> - Quick 10-second sample
+            <code>{{.BaseURL}}/720p_h264_10s</code> - Quick 10-second sample
         </div>
         <div class="example">
             <strong>Change video source:</strong><br>
-            <code>https://{{.Domain}}/cat_128kbps</code> - Cat video instead of default bunny
+            <code>{{.BaseURL}}/cat_128kbps</code> - Cat video instead of default bunny
         </div>
     </div>
 
@@ -209,26 +209,290 @@
     </div>
 
     <div class="section">
+        <h2>🎛️ Parameter Builder</h2>
+        <p>Use the form below to generate your custom video URL:</p>
+        <div class="builder-form">
+            <div class="builder-row">
+                <label for="pb-source">Source Video:</label>
+                <select id="pb-source" class="builder-select">
+                    {{range .SourceVideos}}<option value="{{.}}">{{.}}</option>{{end}}
+                </select>
+            </div>
+            <div class="builder-row">
+                <label for="pb-vcodec">Video Codec:</label>
+                <select id="pb-vcodec" class="builder-select">
+                    <option value="">Default Codec</option>
+                    {{range .VideoCodecs}}<option value="{{.}}">{{.}}</option>{{end}}
+                </select>
+            </div>
+            <div class="builder-row">
+                <label for="pb-res">Resolution:</label>
+                <select id="pb-res" class="builder-select">
+                    <option value="">Default Res</option>
+                    {{range .Resolutions}}<option value="{{.}}">{{.}}</option>{{end}}
+                </select>
+                <div id="pb-custom-res-container" style="display: none; margin-left: 10px; align-items: center; gap: 5px;">
+                    <label for="pb-custom-width" style="width: auto; font-weight: normal;">Width:</label>
+                    <input type="number" id="pb-custom-width" class="builder-input" style="width: 80px; min-width: auto;" min="144" max="3840" placeholder="1920">
+                    <label for="pb-custom-height" style="width: auto; font-weight: normal;">Height:</label>
+                    <input type="number" id="pb-custom-height" class="builder-input" style="width: 80px; min-width: auto;" min="144" max="3840" placeholder="1080">
+                    <span id="pb-custom-error" style="color: red; font-size: 0.9em; margin-left: 5px;"></span>
+                </div>
+            </div>
+            <div class="builder-row">
+                <label for="pb-framerate">Framerate:</label>
+                <select id="pb-framerate" class="builder-select">
+                    <option value="">Default Framerate</option>
+                    <option value="24fps">24fps</option>
+                    <option value="30fps">30fps</option>
+                    <option value="60fps">60fps</option>
+                </select>
+            </div>
+            <div class="builder-row">
+                <label for="pb-acodec">Audio Codec:</label>
+                <select id="pb-acodec" class="builder-select" style="margin-right: 5px;">
+                    <option value="">Default Codec</option>
+                    <option value="aac">aac</option>
+                    <option value="opus">opus</option>
+                    <option value="noaudio">noaudio</option>
+                </select>
+                <div id="pb-abitrate-container" style="display: flex; align-items: center; gap: 5px; margin-left: 10px;">
+                    <label for="pb-abitrate" style="width: auto; font-weight: normal;">Bitrate:</label>
+                    <select id="pb-abitrate" class="builder-select">
+                        <option value="">Default</option>
+                        <option value="96kbps">96kbps</option>
+                        <option value="128kbps">128kbps</option>
+                        <option value="192kbps">192kbps</option>
+                    </select>
+                </div>
+            </div>
+            <div class="builder-row">
+                <label for="pb-duration">Duration:</label>
+                <select id="pb-duration" class="builder-select">
+                    <option value="">Default Duration</option>
+                    <option value="5s">5s</option>
+                    <option value="10s">10s</option>
+                    <option value="30s">30s</option>
+                    <option value="60s">60s</option>
+                    <option value="custom">Custom</option>
+                </select>
+                <div id="pb-custom-dur-container" style="display: none; margin-left: 10px; align-items: center; gap: 5px;">
+                    <input type="number" id="pb-custom-dur-val" class="builder-input" style="width: 80px; min-width: auto;" min="1" placeholder="10">
+                    <select id="pb-custom-dur-unit" class="builder-select" style="width: 70px; min-width: auto;">
+                        <option value="s">s</option>
+                        <option value="min">min</option>
+                    </select>
+                    <span id="pb-custom-dur-error" style="color: red; font-size: 0.9em; margin-left: 5px;"></span>
+                </div>
+            </div>
+            <div class="builder-row">
+                <label for="pb-container">Container:</label>
+                <select id="pb-container" class="builder-select">
+                    <option value="">Default Container</option>
+                    {{range .Containers}}<option value="{{.}}">.{{.}}</option>{{end}}
+                </select>
+            </div>
+        </div>
+        <div class="example" style="margin-top: 15px;">
+            <strong>Generated Link:</strong><br>
+            <a id="pb-link" href="{{.BaseURL}}/bunny" target="_blank"><code>{{.BaseURL}}/bunny</code></a>
+        </div>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const selects = document.querySelectorAll(".builder-select");
+                
+                const customResContainer = document.getElementById("pb-custom-res-container");
+                const customWidthInput = document.getElementById("pb-custom-width");
+                const customHeightInput = document.getElementById("pb-custom-height");
+                const customError = document.getElementById("pb-custom-error");
+                const resSelect = document.getElementById("pb-res");
+
+                const durSelect = document.getElementById("pb-duration");
+                const customDurContainer = document.getElementById("pb-custom-dur-container");
+                const customDurVal = document.getElementById("pb-custom-dur-val");
+                const customDurUnit = document.getElementById("pb-custom-dur-unit");
+                const customDurError = document.getElementById("pb-custom-dur-error");
+                const maxDurationMinutes = parseInt("{{.MaxDurationMinutes}}", 10) || 10;
+                
+                
+                
+
+                const linkEl = document.getElementById("pb-link");
+                const baseUrl = "{{.BaseURL}}";
+
+                
+
+                );
+                    } else {
+                        vbitrateVal.style.display = "none";
+                    }
+                }
+
+                
+                
+
+                function updateLink() {
+                    const source = document.getElementById("pb-source").value;
+                    let res = resSelect.value;
+                    customError.textContent = "";
+                    if (res === "WxH custom") {
+                        let w = parseInt(customWidthInput.value, 10);
+                        let h = parseInt(customHeightInput.value, 10);
+                        if (!w || !h || w < 144 || w > 3840 || h < 144 || h > 3840) {
+                            res = ""; // Ignore if invalid or empty
+                        } else if (w / h > 10 || h / w > 10) {
+                            res = "";
+                            customError.textContent = "Invalid ratio";
+                        } else {
+                            res = w + "x" + h;
+                        }
+                    }
+
+                    let framerate = document.getElementById("pb-framerate").value;
+                    const vcodec = document.getElementById("pb-vcodec").value;
+                    
+                    let vbitrate = "";
+                    if (vbitrateUnit.value && vbitrateVal.value) {
+                        vbitrate = vbitrateVal.value + vbitrateUnit.value;
+                    }
+
+                    let dur = durSelect.value;
+                    customDurError.textContent = "";
+                    if (dur === "custom") {
+                        let val = parseInt(customDurVal.value, 10);
+                        let unit = customDurUnit.value;
+                        if (val > 0) {
+                            let valInSeconds = unit === "min" ? val * 60 : val;
+                            if (valInSeconds > maxDurationMinutes * 60) {
+                                customDurError.textContent = "Max " + maxDurationMinutes + " min";
+                                dur = "";
+                            } else {
+                                dur = valInSeconds + "s";
+                            }
+                        } else {
+                            dur = "";
+                        }
+                    }
+
+                    const acodec = document.getElementById("pb-acodec").value;
+                    const abitrate = document.getElementById("pb-abitrate").value;
+                    const container = document.getElementById("pb-container").value;
+
+                    let params = [];
+                    if (source) params.push(source);
+                    if (vcodec) params.push(vcodec);
+                    if (res) params.push(res);
+                    if (framerate) params.push(framerate);
+                    if (dur) params.push(dur);
+                    
+                    if (acodec) params.push(acodec);
+                    if (abitrate) params.push(abitrate);
+
+                    let paramString = params.join("_");
+                    let ext = container ? "." + container : "";
+                    
+                    let finalUrl = baseUrl + "/" + paramString + ext;
+                    linkEl.href = finalUrl;
+                    linkEl.innerHTML = "<code>" + finalUrl + "</code>";
+                }
+
+                resSelect.addEventListener("change", function() {
+                    if (this.value === "WxH custom") {
+                        customResContainer.style.display = "flex";
+                    } else {
+                        customResContainer.style.display = "none";
+                    }
+                    updateLink();
+                });
+
+                durSelect.addEventListener("change", function() {
+                    if (this.value === "custom") {
+                        customDurContainer.style.display = "flex";
+                    } else {
+                        customDurContainer.style.display = "none";
+                    }
+                    updateLink();
+                });
+
+                const textInputs = [customWidthInput, customHeightInput, customDurVal];
+                textInputs.forEach(el => {
+                    el.addEventListener("input", updateLink);
+                    el.addEventListener("keyup", updateLink);
+                });
+
+                customDurUnit.addEventListener("change", updateLink);
+                document.getElementById("pb-framerate").addEventListener("change", updateLink);
+                document.getElementById("pb-vcodec").addEventListener("change", updateLink);
+                
+                const acodecSelect = document.getElementById("pb-acodec");
+                const abitrateContainer = document.getElementById("pb-abitrate-container");
+                acodecSelect.addEventListener("change", function() {
+                    if (this.value === "noaudio") {
+                        abitrateContainer.style.display = "none";
+                        document.getElementById("pb-abitrate").value = "";
+                    } else {
+                        abitrateContainer.style.display = "flex";
+                    }
+                    updateLink();
+                });
+    
+                document.getElementById("pb-abitrate").addEventListener("change", updateLink);
+                document.getElementById("pb-container").addEventListener("change", updateLink);
+                document.getElementById("pb-source").addEventListener("change", updateLink);
+
+                updateLink();
+            });
+        </script>
+        
+        <style>
+            .builder-form {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+            .builder-row {
+                display: flex;
+                align-items: center;
+            }
+            .builder-row label {
+                width: 120px;
+                font-weight: bold;
+            }
+            .builder-select, .builder-input {
+                padding: 8px;
+                border-radius: 4px;
+                border: 1px solid #ccc;
+                background-color: #fff;
+                color: #333;
+                font-family: inherit;
+                min-width: 150px;
+            }
+            
+        </style>
+    </div>
+
+    <div class="section">
         <h2>📚 Testing Scenarios</h2>
         
         <div class="example">
             <strong>High-res performance testing:</strong><br>
-            <code>https://{{.Domain}}/bunny_4k_h265_30fps_60s_23crf_aac_192kbps.mp4</code>
+            <code>{{.BaseURL}}/bunny_4k_h265_30fps_60s_aac_192kbps.mp4</code>
         </div>
         
         <div class="example">
             <strong>Mobile app development:</strong><br>
-            <code>https://{{.Domain}}/cat_480p_h264_30fps_15s_26crf_aac_96kbps.mp4</code>
+            <code>{{.BaseURL}}/cat_480p_h264_30fps_15s_aac_96kbps.mp4</code>
         </div>
         
         <div class="example">
             <strong>Web player compatibility:</strong><br>
-            <code>https://{{.Domain}}/test_1080p_vp9_30fps_30s_25crf_opus_128kbps.webm</code>
+            <code>{{.BaseURL}}/test_1080p_vp9_30fps_30s_25crf_opus_128kbps.webm</code>
         </div>
         
         <div class="example">
             <strong>Audio player testing:</strong><br>
-            <code>https://{{.Domain}}/bunny_novideo_30s_aac_128kbps.mp4</code>
+            <code>{{.BaseURL}}/bunny_novideo_30s_aac_128kbps.mp4</code>
         </div>
 
         <div class="warning">
@@ -318,9 +582,12 @@
 
     <footer class="footer">
         <p>
-            📧 Contact: <code>info[at]lorem.video</code>
+            <em>This is a fork of the original project by Guntis Smaukstelis.</em>
+        </p>
+        <p>
+            📧 Original Contact: <code>info[at]lorem.video</code>
             | 
-            <a href="https://twitter.com/guntis_dev" target="_blank" rel="noopener">@guntis_dev</a>
+            <a href="https://twitter.com/guntis_dev" target="_blank" rel="noopener">@guntis_dev (Original Author)</a>
         </p>
         <p>
             <a href="/web/terms.html">Terms of Service</a>
@@ -328,12 +595,12 @@
             <a href="/web/privacy.html">Privacy Policy</a>
         </p>
         <p>
-            <a href="https://github.com/guntisdev/lorem-video" target="_blank" rel="noopener">GitHub Repository</a>
+            <a href="https://github.com/guntisdev/lorem-video" target="_blank" rel="noopener">Original GitHub Repository</a>
             | 
             <span>MIT Licensed</span>
         </p>
         <p>
-            <small>© {{.CurrentYear}} lorem.video | Free Video Placeholder Service for Developers</small>
+            <small>© {{.CurrentYear}} lorem.video (Fork) | Free Video Placeholder Service for Developers</small>
         </p>
     </footer>
 

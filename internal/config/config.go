@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strconv"
 	"strings"
 )
 
@@ -33,6 +34,18 @@ type Paths struct {
 var AppPaths = initPaths()
 
 const Port = 3000
+
+var MaxDurationMinutes = initMaxDurationMinutes()
+
+func initMaxDurationMinutes() int {
+	valStr := os.Getenv("MAX_LOREM_VIDEO_MINUTE")
+	if valStr != "" {
+		if v, err := strconv.Atoi(valStr); err == nil && v > 0 {
+			return v
+		}
+	}
+	return 0 // 0 means use video duration later
+}
 
 func GetBaseURL() string {
 	baseURL := os.Getenv("BASE_URL")

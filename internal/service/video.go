@@ -128,16 +128,36 @@ func (s *VideoService) Transcode(ctx context.Context, spec config.VideoSpec, inp
 			args = append(args, "-vn") // no video
 		}
 
-		// Bitrate handling
-		if strings.HasSuffix(spec.Bitrate, "crf") {
-			crf := strings.TrimSuffix(spec.Bitrate, "crf")
-			args = append(args, "-crf", crf)
-		} else if strings.HasSuffix(spec.Bitrate, "cbr") {
-			bitrate := strings.TrimSuffix(spec.Bitrate, "cbr")
-			args = append(args, "-b:v", bitrate+"k", "-maxrate", bitrate+"k", "-bufsize", bitrate+"k")
-		} else if strings.HasSuffix(spec.Bitrate, "vbr") {
-			bitrate := strings.TrimSuffix(spec.Bitrate, "vbr")
-			args = append(args, "-b:v", bitrate+"k")
+		// Dynamic CRF based on resolution if no bitrate provided
+		if spec.Codec != "novideo" {
+			if spec.Bitrate != "" {
+				// Bitrate handling
+				if strings.HasSuffix(spec.Bitrate, "crf") {
+					crf := strings.TrimSuffix(spec.Bitrate, "crf")
+					args = append(args, "-crf", crf)
+				} else if strings.HasSuffix(spec.Bitrate, "cbr") {
+					bitrate := strings.TrimSuffix(spec.Bitrate, "cbr")
+					args = append(args, "-b:v", bitrate+"k", "-maxrate", bitrate+"k", "-bufsize", bitrate+"k")
+				} else if strings.HasSuffix(spec.Bitrate, "vbr") {
+					bitrate := strings.TrimSuffix(spec.Bitrate, "vbr")
+					args = append(args, "-b:v", bitrate+"k")
+				}
+			} else {
+				area := spec.Width * spec.Height
+				var crf string
+				if area >= 3840*2160 {
+					crf = "28" // 4K
+				} else if area >= 2560*1440 {
+					crf = "25" // 2K
+				} else if area >= 1920*1080 {
+					crf = "23" // 1080p
+				} else if area >= 1280*720 {
+					crf = "21" // 720p
+				} else {
+					crf = "18" // lower res
+				}
+				args = append(args, "-crf", crf)
+			}
 		}
 
 		audioCodec := config.AudioCodecNameMap[spec.AudioCodec]

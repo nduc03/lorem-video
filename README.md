@@ -61,6 +61,11 @@ GET /robots.txt
 
 ## Development
 
+### Environment Variables
+You can configure the application using the following environment variables:
+- `BUNNY_VIDEO_URL`: URL to download the default high-resolution video. If not set, a test video pattern will be generated instead.
+- `MAX_LOREM_VIDEO_MINUTE`: Maximum duration (in minutes) allowed for video generation. Defaults to the duration of the default video. If set, the max duration will be `min(MAX_LOREM_VIDEO_MINUTE, video_duration_minutes)`.
+
 ### Data Directories
 - `/data/video/` - Generated video cache
 - `/data/logs/stats/` - Daily stats logs (JSONL format)

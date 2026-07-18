@@ -13,10 +13,11 @@ import (
 )
 
 type TemplateData struct {
-	Domain       string
-	Version      string
-	CurrentYear  int
-	VideoCodecs  []string
+	BaseURL            string
+	Version            string
+	CurrentYear        int
+	MaxDurationMinutes int
+	VideoCodecs        []string
 	AudioCodecs  []string
 	Containers   []string
 	Resolutions  []string
@@ -56,10 +57,11 @@ func (rest *Rest) ServeDocumentation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := TemplateData{
-		Domain:       "lorem.video",
-		Version:      rest.appVersion, // for caching
-		CurrentYear:  time.Now().Year(),
-		VideoCodecs:  config.ValidVideoCodecs,
+		BaseURL:            config.GetBaseURL(),
+		Version:            rest.appVersion, // for caching
+		CurrentYear:        time.Now().Year(),
+		MaxDurationMinutes: config.MaxDurationMinutes,
+		VideoCodecs:        config.ValidVideoCodecs,
 		AudioCodecs:  config.ValidAudioCodecs,
 		Containers:   config.ValidContainers,
 		Resolutions:  resolutionNames,

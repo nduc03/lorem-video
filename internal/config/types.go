@@ -41,12 +41,12 @@ var DefaultPregenSpecs = []VideoSpec{
 	{Width: 1280, Height: 720, FPS: 30, Duration: 20, Codec: "h264", Bitrate: "25crf", AudioCodec: "aac", AudioBitrate: 128, Container: "mp4"},  // 720p
 	{Width: 1920, Height: 1080, FPS: 30, Duration: 20, Codec: "h264", Bitrate: "25crf", AudioCodec: "aac", AudioBitrate: 128, Container: "mp4"}, // 1080p
 
-	// AV1/Opus/WebM - Next-gen efficient streaming (same CRF = higher quality due to efficiency)
+	// AV1
 	{Width: 854, Height: 480, FPS: 30, Duration: 20, Codec: "av1", Bitrate: "25crf", AudioCodec: "opus", AudioBitrate: 96, Container: "webm"},    // 480p
 	{Width: 1280, Height: 720, FPS: 30, Duration: 20, Codec: "av1", Bitrate: "25crf", AudioCodec: "opus", AudioBitrate: 128, Container: "webm"},  // 720p
 	{Width: 1920, Height: 1080, FPS: 30, Duration: 20, Codec: "av1", Bitrate: "25crf", AudioCodec: "opus", AudioBitrate: 128, Container: "webm"}, // 1080p
 
-	// VP9/Opus/WebM - Widely supported alternative (same CRF = better quality than H.264)
+	// VP9
 	{Width: 854, Height: 480, FPS: 30, Duration: 20, Codec: "vp9", Bitrate: "25crf", AudioCodec: "opus", AudioBitrate: 96, Container: "webm"},    // 480p
 	{Width: 1280, Height: 720, FPS: 30, Duration: 20, Codec: "vp9", Bitrate: "25crf", AudioCodec: "opus", AudioBitrate: 128, Container: "webm"},  // 720p
 	{Width: 1920, Height: 1080, FPS: 30, Duration: 20, Codec: "vp9", Bitrate: "25crf", AudioCodec: "opus", AudioBitrate: 128, Container: "webm"}, // 1080p
@@ -97,7 +97,7 @@ var ResolutionsName = map[string]string{
 }
 
 const (
-	MinDimension = 64
+	MinDimension = 144
 	MaxDimension = 3840 // 4K
 )
 
@@ -181,8 +181,8 @@ func ParseResolution(s string) (Resolution, error) {
 		return Resolution{}, fmt.Errorf("invalid height: %s", parts[1])
 	}
 
-	if width < MinDimension || width > MaxDimension || height < MinDimension || height > MaxDimension {
-		return Resolution{}, fmt.Errorf("resolution out of bounds: %dx%d", width, height)
+	if err := ValidateResolution(width, height); err != nil {
+		return Resolution{}, err
 	}
 
 	return Resolution{Width: width, Height: height}, nil

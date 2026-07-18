@@ -85,27 +85,36 @@ func ParseFilename(filename string) (*config.VideoSpec, error) {
 		case strings.HasSuffix(part, "fps"):
 			fpsStr := strings.TrimSuffix(part, "fps")
 			if fps, err := strconv.Atoi(fpsStr); err == nil {
+				if err := config.ValidateFramerate(fps); err != nil {
+					return nil, err
+				}
 				params.FPS = fps
 			}
 
 		case durationRegex.MatchString(part):
 			durationStr := strings.TrimSuffix(part, "s")
 			if duration, err := strconv.Atoi(durationStr); err == nil {
+				if err := config.ValidateDuration(duration, config.MaxDurationMinutes); err != nil {
+					return nil, err
+				}
 				params.Duration = duration
 			}
 
+
 		case crfRegex.MatchString(part):
-			params.Bitrate = part
+			// Silently ignore bitrate in API link
 
 		case cbrRegex.MatchString(part):
-			params.Bitrate = part
+			// Silently ignore bitrate in API link
 
 		case vbrRegex.MatchString(part):
-			params.Bitrate = part
+			// Silently ignore bitrate in API link
 
 		case audioBitrateRegex.MatchString(part):
 			audioBitrateStr := strings.TrimSuffix(part, "kbps")
 			if audioBitrate, err := strconv.Atoi(audioBitrateStr); err == nil {
+				// We validate audio bitrate later after all parts are parsed
+				// to allow "noaudio" codec bypass.
 				params.AudioBitrate = audioBitrate
 			}
 
@@ -116,11 +125,20 @@ func ParseFilename(filename string) (*config.VideoSpec, error) {
 			} else if slices.Contains(config.ValidVideoCodecs, part) {
 				params.Codec = part
 			} else if slices.Contains(config.ValidAudioCodecs, part) {
+				if err := config.ValidateAudioCodec(part); err != nil {
+					return nil, err
+				}
 				params.AudioCodec = part
 			} else if slices.Contains(sourceFiles, part) {
 				params.Name = part
 			}
 
+		}
+	}
+
+	if params.AudioBitrate > 0 {
+		if err := config.ValidateAudioBitrate(params.AudioBitrate, params.AudioCodec); err != nil {
+			return nil, err
 		}
 	}
 
