@@ -316,21 +316,8 @@
                 const maxDurationMinutes = parseInt("{{.MaxDurationMinutes}}", 10) || 10;
                 
                 
-                
-
                 const linkEl = document.getElementById("pb-link");
                 const baseUrl = "{{.BaseURL}}";
-
-                
-
-                );
-                    } else {
-                        vbitrateVal.style.display = "none";
-                    }
-                }
-
-                
-                
 
                 function updateLink() {
                     const source = document.getElementById("pb-source").value;
@@ -351,11 +338,6 @@
 
                     let framerate = document.getElementById("pb-framerate").value;
                     const vcodec = document.getElementById("pb-vcodec").value;
-                    
-                    let vbitrate = "";
-                    if (vbitrateUnit.value && vbitrateVal.value) {
-                        vbitrate = vbitrateVal.value + vbitrateUnit.value;
-                    }
 
                     let dur = durSelect.value;
                     customDurError.textContent = "";
