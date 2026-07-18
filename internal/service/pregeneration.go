@@ -62,11 +62,7 @@ func PregenerateAllVideos(ctx context.Context) (map[string][]string, error) {
 
 func PregenerateVideos(ctx context.Context, inputPath string) ([]string, error) {
 	filenameNoExt := strings.TrimSuffix(filepath.Base(inputPath), filepath.Ext(inputPath))
-	outputDir := filepath.Join(config.AppPaths.Video, filenameNoExt)
-
-	if err := os.MkdirAll(outputDir, 0755); err != nil {
-		return nil, fmt.Errorf("failed to create output directory: %w", err)
-	}
+	outputDir := config.AppPaths.Video
 
 	var generatedFiles []string
 

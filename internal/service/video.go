@@ -25,7 +25,7 @@ func NewVideoService() *VideoService {
 func (s *VideoService) GetInfo(name string) (*config.FFProbeOutput, error) {
 	// TODO convert name to spec and chek data/video first and then data/tmp
 	// HACK "bunny" is hardoded for now
-	videoPath := filepath.Join(config.AppPaths.Video, "bunny", name)
+	videoPath := filepath.Join(config.AppPaths.Video, name)
 
 	if _, err := os.Stat(videoPath); os.IsNotExist(err) {
 		return nil, fmt.Errorf("video not found: %s", name)
@@ -89,6 +89,21 @@ func (s *VideoService) Transcode(ctx context.Context, spec config.VideoSpec, inp
 		}()
 		return resultCh, errCh
 	}
+
+	tempOutputPath := fullOutputPath + ".processing" + filepath.Ext(fullOutputPath)
+
+	// Create the temp file exclusively to act as an atomic lock against race conditions
+	// If it fails, someone else is already processing this video.
+	f, err := os.OpenFile(tempOutputPath, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0666)
+	if err != nil {
+		go func() {
+			defer close(resultCh)
+			defer close(errCh)
+			errCh <- fmt.Errorf("already processing")
+		}()
+		return resultCh, errCh
+	}
+	f.Close()
 
 	go func() {
 		defer close(resultCh)
@@ -171,7 +186,7 @@ func (s *VideoService) Transcode(ctx context.Context, spec config.VideoSpec, inp
 			args = append(args, "-an") // no audio
 		}
 
-		args = append(args, fullOutputPath)
+		args = append(args, tempOutputPath)
 
 		cmd := createFFmpegCmd(ctx, args)
 
@@ -183,13 +198,19 @@ func (s *VideoService) Transcode(ctx context.Context, spec config.VideoSpec, inp
 			log.Printf("FFmpeg stderr output: %s", stderr.String())
 
 			// Clean up partial file on failure
-			if _, statErr := os.Stat(fullOutputPath); statErr == nil {
-				if removeErr := os.Remove(fullOutputPath); removeErr != nil {
+			if _, statErr := os.Stat(tempOutputPath); statErr == nil {
+				if removeErr := os.Remove(tempOutputPath); removeErr != nil {
 					log.Printf("Failed to clean up partial file: %v", removeErr)
 				}
 			}
 
 			errCh <- fmt.Errorf("ffmpeg failed: %w\nOutput: %s", err, stderr.String())
+			return
+		}
+
+		// Rename temp file to final destination
+		if renameErr := os.Rename(tempOutputPath, fullOutputPath); renameErr != nil {
+			errCh <- fmt.Errorf("failed to rename temp file: %w", renameErr)
 			return
 		}
 

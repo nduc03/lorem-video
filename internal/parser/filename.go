@@ -194,16 +194,16 @@ func GenerateFilename(spec *config.VideoSpec) string {
 
 func FindExistingVideo(filename string, spec *config.VideoSpec) string {
 	// Search in video/ pregen folder
-	pregenPath := filepath.Join(config.AppPaths.Video, spec.Name, filename)
+	pregenPath := filepath.Join(config.AppPaths.Video, filename)
 	if _, err := os.Stat(pregenPath); err == nil {
 		return pregenPath
 	}
 
-	// Search in tmp folder
-	tmpPath := filepath.Join(config.AppPaths.Tmp, filename)
-	if _, err := os.Stat(tmpPath); err == nil {
-		return tmpPath
-	}
-
 	return ""
+}
+
+func IsVideoProcessing(filename string, spec *config.VideoSpec) bool {
+	processingPath := filepath.Join(config.AppPaths.Video, filename+".processing"+filepath.Ext(filename))
+	_, err := os.Stat(processingPath)
+	return err == nil
 }

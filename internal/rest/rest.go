@@ -126,6 +126,12 @@ func (rest *Rest) ServeVideo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Check if video is currently processing
+	if parser.IsVideoProcessing(filename, &spec) {
+		sendProcessingResponse(w)
+		return
+	}
+
 	// Video not found, start transcoding and tell client to retry
 	log.Printf("Starting transcoding for: %s", filename)
 
@@ -138,8 +144,12 @@ func (rest *Rest) ServeVideo(w http.ResponseWriter, r *http.Request) {
 
 	// Start transcoding in background
 	backgroundCtx := context.Background()
-	_, _ = rest.videoService.Transcode(backgroundCtx, spec, inputPath, config.AppPaths.Tmp)
+	_, _ = rest.videoService.Transcode(backgroundCtx, spec, inputPath, config.AppPaths.Video)
 
+	sendProcessingResponse(w)
+}
+
+func sendProcessingResponse(w http.ResponseWriter) {
 	// Return 202 Accepted with retry instructions
 	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
 	w.Header().Set("Retry-After", "5")

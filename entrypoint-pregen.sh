@@ -1,17 +1,15 @@
 #!/bin/sh
 set -e
 
-# Copy pregenerated data to /data only if it doesn't already exist in the mounted volume
-# Using -n (no clobber) so it won't overwrite any existing files the user might have generated
-if [ -d "/pregen-data/sourceVideo" ]; then
+# Ensure directories exist so cp doesn't fail or skip due to busybox limitations
+mkdir -p /data/sourceVideo /data/video /data/stream
+
+if [ -d "/pregen-data" ]; then
+    # Copy files from each directory, not overwriting existing ones.
+    # Busybox cp -n skips the whole directory if the dest directory exists, 
+    # so we must copy the contents of the directories instead.
     cp -rn /pregen-data/sourceVideo/* /data/sourceVideo/ 2>/dev/null || true
-fi
-
-if [ -d "/pregen-data/video" ]; then
     cp -rn /pregen-data/video/* /data/video/ 2>/dev/null || true
-fi
-
-if [ -d "/pregen-data/stream" ]; then
     cp -rn /pregen-data/stream/* /data/stream/ 2>/dev/null || true
 fi
 

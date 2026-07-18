@@ -179,7 +179,7 @@ func TestFindExistingVideoIntegration(t *testing.T) {
 	}
 
 	// Create bunny subdirectory for pregenerated videos
-	bunnyDir := filepath.Join(config.AppPaths.Video, "bunny")
+	bunnyDir := config.AppPaths.Video
 	if err := os.MkdirAll(bunnyDir, 0755); err != nil {
 		t.Fatalf("Failed to create bunny directory: %v", err)
 	}
